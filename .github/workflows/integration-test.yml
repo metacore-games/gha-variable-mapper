@@ -187,9 +187,10 @@ jobs:
           }
         export_to: env
         mode: first_match
-    - name: assert
-      if: ${{ env.env1 == 'one' }}
-      run: exit 1
+    - if: ${{ env.env1 != 'one' }}
+      run: |
+        echo env1[${{ env.env1}}] should be equal to 'one'
+        exit 1
   test-exact-match2:
     runs-on: ubuntu-latest
     steps:
@@ -211,6 +212,7 @@ jobs:
           }
         export_to: env
         mode: first_match
-    - name: assert
-      if: ${{ env.env1 == 'two' }}
-      run: exit 1
+    - if: ${{ env.env1 != 'two' }}
+      run: |
+        echo env1[${{ env.env1}}] should be equal to 'two'
+        exit 1
