@@ -1,6 +1,6 @@
 # Github Action for mapping variables by a specific key
 
-![build-test](https://github.com/kanga333/variable-mapper/workflows/build-test/badge.svg)
+![build-test](https://github.com/metacore-games/gha-variable-mapper/workflows/build-test/badge.svg)
 
 Variable-Mapper action maps variables by regular expressions.
 
@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: kanga333/variable-mapper@master
+    - uses: metacore-games/gha-variable-mapper@master
       with:
         key: "${{github.base_ref}}"
         map: |
@@ -56,7 +56,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: kanga333/variable-mapper@master
+    - uses: metacore-games/gha-variable-mapper@master
       id: export
       with:
         key: "${{github.base_ref}}"
@@ -94,7 +94,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: kanga333/variable-mapper@master
+    - uses: metacore-games/gha-variable-mapper@master
       id: export
       with:
         key: "first"
@@ -120,6 +120,40 @@ jobs:
 
 In this workflow, only `env1:value1` and `env2:value2` are exported as env.
 
+#### `exact_match` mode
+Will only match exact matches
+
+```yaml
+on: [push]
+name: Exporting variables in the exact match
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: metacore-games/gha-variable-mapper@master
+      id: export
+      with:
+        key: "development1"
+        map: |
+          {
+            "development1": {
+              "env1": "value1",
+              "env2": "value2"
+            },
+            "development10": {
+              "env1": "value1_overwrite",
+              "env3": "value3"
+            }
+          }
+        export_to: env
+        mode: exact_match
+    - name: Echo environment and output
+      run: |
+        echo ${{ env.env1 }}
+        echo ${{ env.env2 }}
+        echo ${{ env.env3 }}
+```
+
 #### overwrite mode
 
 `overwrite` evaluates the regular expression of the keys in order from the top, and then merges the variables associated with the matched keys in turn. If the same variable is defined, the later evaluated value is overwritten.
@@ -131,7 +165,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: kanga333/variable-mapper@master
+    - uses: metacore-games/gha-variable-mapper@master
       id: export
       with:
         key: "first"
@@ -168,7 +202,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: kanga333/variable-mapper@master
+    - uses: metacore-games/gha-variable-mapper@master
       id: export
       with:
         key: "first"
