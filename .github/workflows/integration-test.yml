@@ -186,7 +186,7 @@ jobs:
             }
           }
         export_to: env
-        mode: first_match
+        mode: exact_match
     - if: ${{ env.env1 != 'one' }}
       run: |
         echo env1[${{ env.env1}}] should be equal to 'one'
@@ -211,7 +211,7 @@ jobs:
             }
           }
         export_to: env
-        mode: first_match
+        mode: exact_match
     - if: ${{ env.env1 != 'two' }}
       run: |
         echo env1[${{ env.env1}}] should be equal to 'two'
