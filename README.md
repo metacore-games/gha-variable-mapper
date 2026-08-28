@@ -6,6 +6,7 @@ Variable-Mapper action maps variables by regular expressions.
 
 - The map argument is a configuration in json format.
   - The top-level key in JSON is a regular expression condition. They are evaluated in order from the top.
+  - The regular expression has to match the **whole** key, not just a part of it. For example `dev1` matches `dev1` but not `mansion-dev1`; use `.*dev1` or `.*dev1.*` if you want a partial match.
   - The value is the key-value pair of variables to be exported.
 - The key argument is the key to match the map.
 

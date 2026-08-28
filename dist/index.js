@@ -137,9 +137,12 @@ class KeyVariablesPair {
         this.key = key;
         this.variables = variables;
         this.idx = idx;
+        // The pattern has to cover the whole key, otherwise a pattern like "dev1"
+        // would also match "mansion-dev1" and shadow the more specific entry.
+        this.pattern = new RegExp(`^(?:${key})$`);
     }
     match(key) {
-        return Boolean(key.match(this.key));
+        return this.pattern.test(key);
     }
     export(fn) {
         for (const variable of this.variables.entries()) {

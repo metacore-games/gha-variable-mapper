@@ -5,15 +5,17 @@ class KeyVariablesPair {
   key: string
   variables: Map<string, string>
   idx: number
+  private readonly pattern: RegExp
 
   constructor(key: string, variables: Map<string, string>, idx: number) {
     this.key = key
     this.variables = variables
     this.idx = idx
+    this.pattern = new RegExp(`^(?:${key})$`)
   }
 
   match(key: string): boolean {
-    return Boolean(key.match(this.key))
+    return this.pattern.test(key)
   }
 
   export(fn: ExportFunc): void {
