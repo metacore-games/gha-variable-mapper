@@ -101,4 +101,33 @@ describe('JSONMapper', () => {
       )
     })
   })
+
+  describe('Partial matches', () => {
+    const mapper = new JSONMapper(
+      '{"dev1":{"env1":"dev1"},"mansion-dev1":{"env1":"mansion-dev1"}}',
+      'first_match'
+    )
+
+    it('does not match a key that only contains the pattern as a substring', () => {
+      const got = mapper.match('mansion-dev1')
+      if (!got) {
+        throw new Error('No match')
+      }
+      expect(got.key).toBe('mansion-dev1')
+      expect(got.variables).toMatchObject(new Map([['env1', 'mansion-dev1']]))
+    })
+
+    it('still matches the exact key', () => {
+      const got = mapper.match('dev1')
+      if (!got) {
+        throw new Error('No match')
+      }
+      expect(got.key).toBe('dev1')
+      expect(got.variables).toMatchObject(new Map([['env1', 'dev1']]))
+    })
+
+    it('returns undefined when no pattern covers the whole key', () => {
+      expect(mapper.match('dev12')).toBeUndefined()
+    })
+  })
 })
